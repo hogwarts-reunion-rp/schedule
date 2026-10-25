@@ -1,0 +1,886 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Harmonogram · Hogwarts Reunion</title>
+<meta name="description" content="Harmonogram programu badań i praktyk w Hogwarcie, rok 2003/2004. Pokazuje, co Twoja katedra ma w tej chwili.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --outer: #435031;
+    --card: #d1cfb9;
+    --paper: #dfddca;
+    --ink: #2a2c1f;
+    --muted: #5e604b;
+    --olive: #47542f;
+    --olive-ink: #e4e2cf;
+    --line: #8f9176;
+    --soft: #c3c1a6;
+    --serif: "Bodoni Moda", "Didot", Georgia, serif;
+    --sans: "Libre Franklin", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--outer);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    padding: 24px 16px 48px;
+  }
+  .card {
+    max-width: 980px;
+    margin: 0 auto;
+    background: var(--card);
+    border-radius: 14px;
+    padding: 40px 44px 32px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  }
+  h1, h2, .serif { font-family: var(--serif); font-weight: 400; }
+  h1 {
+    font-size: clamp(38px, 6.5vw, 60px);
+    line-height: 1.05;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  h2 {
+    font-size: clamp(24px, 3.4vw, 32px);
+    line-height: 1.15;
+    margin: 0 0 18px;
+  }
+  .stripe {
+    height: 7px;
+    margin: 22px 0 28px;
+    background: repeating-linear-gradient(-55deg, var(--line) 0 1px, transparent 1px 3px);
+    opacity: .9;
+  }
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+  .sub { color: var(--muted); margin: 8px 0 0; font-size: 14px; }
+  section { margin-top: 40px; }
+  section:first-of-type { margin-top: 0; }
+
+  /* Top bar: clock + chair picker */
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    align-items: end;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .clock .time {
+    font-family: var(--serif);
+    font-size: clamp(34px, 5vw, 44px);
+    line-height: 1;
+  }
+  .clock .day { color: var(--muted); font-size: 14px; margin-top: 6px; }
+  .picker label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  select, input[type="time"] {
+    font: inherit;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 9px 12px;
+    min-height: 42px;
+    max-width: 100%;
+  }
+  .picker select { width: min(380px, 100%); }
+  select:focus-visible, input:focus-visible, button:focus-visible {
+    outline: 2px solid var(--olive);
+    outline-offset: 2px;
+  }
+
+  /* Now card */
+  .now {
+    background: var(--paper);
+    border: 1px solid var(--soft);
+    border-radius: 12px;
+    padding: 26px 28px 24px;
+  }
+  .now .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .now .title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4.2vw, 38px);
+    line-height: 1.15;
+    margin: 8px 0 10px;
+  }
+  .meta { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; color: var(--muted); font-size: 14px; }
+  .chip {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--olive);
+    color: var(--olive);
+    white-space: nowrap;
+  }
+  .chip.solid { background: var(--olive); color: var(--olive-ink); }
+  .chip.muted { border-color: var(--line); color: var(--muted); }
+  .note { margin: 12px 0 0; }
+  .bar { height: 4px; background: var(--soft); border-radius: 4px; margin: 18px 0 14px; overflow: hidden; }
+  .bar > span { display: block; height: 100%; background: var(--olive); width: 0; transition: width .4s; }
+  .next { font-size: 14px; }
+  .next strong { font-weight: 600; }
+  .empty-now { font-family: var(--serif); font-size: 24px; line-height: 1.3; margin: 4px 0; }
+
+  .banner {
+    margin-top: 14px;
+    background: var(--olive);
+    color: var(--olive-ink);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+  .banner strong { font-weight: 600; }
+  .preview-note {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .preview-note button { margin-left: 6px; }
+
+  /* Day view */
+  .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .tab, .btn {
+    font: inherit;
+    font-size: 14px;
+    border: 1px solid var(--olive);
+    background: transparent;
+    color: var(--olive);
+    border-radius: 8px;
+    padding: 8px 12px;
+    min-height: 40px;
+    cursor: pointer;
+  }
+  .tab[aria-selected="true"], .btn.solid { background: var(--olive); color: var(--olive-ink); }
+  .tab .today-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-left: 6px; vertical-align: middle; }
+  .timeline { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--soft); }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 112px 1fr;
+    gap: 4px 16px;
+    padding: 12px 12px;
+    border-bottom: 1px solid var(--soft);
+  }
+  .timeline .t { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 14px; padding-top: 2px; }
+  .timeline .what { font-weight: 500; }
+  .timeline .where { color: var(--muted); font-size: 13px; }
+  .timeline .row-top { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; }
+  .timeline li.past { opacity: .5; }
+  .timeline li.current { background: var(--paper); box-shadow: inset 3px 0 0 var(--olive); }
+  .timeline li.quiet .what { font-weight: 400; color: var(--muted); }
+
+  /* Others */
+  .others { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+  .other {
+    background: var(--paper);
+    border: 1px solid var(--soft);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .other.mine { border-color: var(--olive); box-shadow: inset 0 0 0 1px var(--olive); }
+  .other .k { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+  .other .w { margin-top: 4px; font-size: 14px; }
+
+  /* Calendar */
+  .events { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--soft); }
+  .events li {
+    display: grid;
+    grid-template-columns: 150px 1fr auto;
+    gap: 4px 16px;
+    align-items: baseline;
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--soft);
+  }
+  .events .d { color: var(--muted); font-size: 14px; }
+  .events .s { font-size: 13px; color: var(--olive); font-weight: 600; white-space: nowrap; }
+  .events li.done { opacity: .5; }
+  .events li.done .s { color: var(--muted); font-weight: 400; }
+
+  /* Preview controls */
+  details.peek { margin-top: 40px; }
+  details.peek summary {
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    list-style: none;
+  }
+  details.peek summary::-webkit-details-marker { display: none; }
+  details.peek summary::before { content: "+ "; }
+  details.peek[open] summary::before { content: "– "; }
+  .peek-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+
+  footer {
+    margin-top: 36px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--olive);
+  }
+  footer a { color: inherit; }
+  footer p { margin: 6px 0; }
+  footer .plain { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--muted); }
+
+  @media (max-width: 640px) {
+    body { padding: 12px 10px 32px; }
+    .card { padding: 26px 18px 24px; border-radius: 12px; }
+    .stripe { margin: 18px 0 22px; }
+    .now { padding: 20px 18px; }
+    .timeline li { grid-template-columns: 1fr; padding: 12px 10px; }
+    .events li { grid-template-columns: 1fr auto; }
+    .events .d { grid-column: 1 / -1; }
+    .tab { padding: 8px 10px; }
+    .others { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .other { padding: 10px 11px; }
+  }
+</style>
+</head>
+<body>
+<main class="card">
+  <h1>Hogwarts Reunion</h1>
+  <div class="stripe" aria-hidden="true"></div>
+
+  <section aria-labelledby="now-h">
+    <p class="eyebrow" id="now-h">Harmonogram programu · 2003/2004</p>
+    <div class="topbar">
+      <div class="clock" aria-live="polite">
+        <div class="time" id="clock-time">--:--</div>
+        <div class="day" id="clock-day">czas polski</div>
+      </div>
+      <div class="picker">
+        <label for="chair">Twoja katedra</label>
+        <select id="chair"></select>
+      </div>
+    </div>
+    <div class="now" id="now" aria-live="polite"></div>
+    <div id="banner"></div>
+    <div id="preview-note"></div>
+  </section>
+
+  <section aria-labelledby="day-h">
+    <h2 id="day-h">Twój tydzień</h2>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <ol class="timeline" id="timeline"></ol>
+  </section>
+
+  <section aria-labelledby="others-h">
+    <h2 id="others-h">Gdzie są teraz inni</h2>
+    <div class="others" id="others"></div>
+  </section>
+
+  <section aria-labelledby="cal-h">
+    <h2 id="cal-h">Terminarz semestru</h2>
+    <ul class="events" id="events"></ul>
+  </section>
+
+  <details class="peek" id="peek">
+    <summary>Sprawdź inną porę</summary>
+    <div class="peek-row">
+      <select id="peek-day" aria-label="Dzień tygodnia"></select>
+      <input type="time" id="peek-time" value="12:00" aria-label="Godzina">
+      <button class="btn solid" id="peek-go" type="button">Pokaż</button>
+      <button class="btn" id="peek-reset" type="button">Wróć do teraz</button>
+    </div>
+  </details>
+
+  <div class="stripe" aria-hidden="true"></div>
+  <footer>
+    <p><a href="https://x.com/HogwartsReunion" target="_blank" rel="noopener">@HogwartsReunion</a></p>
+    <p class="plain">Godziny według czasu polskiego. Konto fikcyjne, RP account.</p>
+  </footer>
+</main>
+
+<script>
+/* =====================================================================
+   DANE DO EDYCJI
+   Wszystko, co trzeba zmienić w planie, jest w tej części pliku.
+   ===================================================================== */
+
+// Plan tygodnia każdej katedry: pięć wierszy (pon–pt), w każdym [rano, popołudnie].
+// Opcjonalnie trzeci i czwarty element to miejsce dla rana i popołudnia,
+// jeśli różni się od domyślnego (place / classPlace).
+const KATEDRY = [
+  {
+    id: "eliksiry", short: "Eliksiry i Toksykologia",
+    name: "Katedra Zaawansowanych Eliksirów i Toksykologii",
+    place: "Lochy, laboratorium", classPlace: "Sala eliksirów w lochach",
+    plan: [
+      ["Warzenie długoterminowych eliksirów badawczych", "Lekcje eliksirów, klasy 1–3"],
+      ["Badania nad truciznami i odtrutkami", "Lekcje eliksirów, klasy 4–5"],
+      ["Inwentaryzacja magazynu składników zastrzeżonych", "Lekcje eliksirów, klasy 6–7", "Magazyn składników w lochach"],
+      ["Eliksiry lecznicze na zamówienie skrzydła szpitalnego", "Koło eliksirów dla chętnych uczniów"],
+      ["Zebranie katedry", "Wolne"]
+    ]
+  },
+  {
+    id: "transmutacja", short: "Transmutacja i Teoria Magii",
+    name: "Katedra Wyższej Transmutacji i Teorii Magii",
+    place: "Pracownia na drugim piętrze", classPlace: "Sala transmutacji",
+    plan: [
+      ["Badania teoretyczne, praca z literaturą", "Lekcje transmutacji, klasy 1–3", "Biblioteka"],
+      ["Eksperymenty w pracowni", "Lekcje transmutacji, klasy 4–5"],
+      ["Sprawdzanie prac uczniów", "Lekcje transmutacji, klasy 6–7"],
+      ["Ćwiczenia z animagii pod nadzorem, dla zakwalifikowanych", "Zajęcia wyrównawcze"],
+      ["Zebranie katedry", "Wolne"]
+    ]
+  },
+  {
+    id: "botanika", short: "Botanika i Zielarstwo",
+    name: "Katedra Botaniki Magicznej i Zielarstwa",
+    place: "Cieplarnie 1–7", classPlace: "Cieplarnie",
+    plan: [
+      ["Obchód i pielęgnacja cieplarni 1–7", "Lekcje zielarstwa, klasy 1–3"],
+      ["Hodowla doświadczalna, krzyżowanie odmian", "Lekcje zielarstwa, klasy 4–5"],
+      ["Zbiór i suszenie surowców dla lochów i skrzydła szpitalnego", "Lekcje zielarstwa, klasy 6–7"],
+      ["Przesadzanie roślin niebezpiecznych, tylko w parach", "Opieka nad cieplarniami po lekcjach"],
+      ["Zebranie katedry", "Wolne"]
+    ]
+  },
+  {
+    id: "runy", short: "Runy i Manuskrypty",
+    name: "Instytut Starożytnych Run i Manuskryptów",
+    place: "Biblioteka, czytelnia rękopisów", classPlace: "Sala starożytnych run",
+    plan: [
+      ["Tłumaczenie rękopisów z Działu Ksiąg Zakazanych", "Lekcje starożytnych run, klasy 3–5", "Dział Ksiąg Zakazanych"],
+      ["Konserwacja zniszczonych woluminów", "Dyżur w bibliotece", null, "Biblioteka"],
+      ["Katalogowanie zbiorów", "Lekcje starożytnych run, klasy 6–7"],
+      ["Badanie inskrypcji w murach zamku", "Pomoc uczniom w czytelni", "Korytarze zamku", "Czytelnia"],
+      ["Zebranie katedry", "Wolne"]
+    ]
+  },
+  {
+    id: "obrona", short: "Obrona i Klątwologia",
+    name: "Katedra Zaawansowanej Obrony i Klątwologii",
+    place: "Sala obrony", classPlace: "Sala obrony przed czarną magią",
+    plan: [
+      ["Przegląd zamku pod kątem pozostałości klątw", "Lekcje obrony przed czarną magią, klasy 1–3", "Korytarze zamku"],
+      ["Badania nad zdejmowaniem klątw z artefaktów", "Lekcje obrony przed czarną magią, klasy 4–5"],
+      ["Przygotowanie sali i scenariuszy pojedynków", "Lekcje obrony przed czarną magią, klasy 6–7"],
+      ["Zabezpieczanie nieużywanego skrzydła", "Klub pojedynków dla uczniów", "Nieużywane skrzydło zamku"],
+      ["Zebranie katedry, raport bezpieczeństwa dla Dyrekcji", "Wolne"]
+    ]
+  },
+  {
+    id: "prawo", short: "Prawo i Archiwum Wizengamotu",
+    name: "Wydział Prawa Magicznego i Archiwum Wizengamotu",
+    place: "Archiwum w podziemiach biblioteki", classPlace: "Sala historii magii",
+    plan: [
+      ["Porządkowanie archiwum Wizengamotu", "Lekcje historii magii, klasy 1–4"],
+      ["Korespondencja z Ministerstwem w sprawach programu", "Lekcje historii magii, klasy 5–7"],
+      ["Analiza akt powojennych procesów", "Porady dla uczniów w sprawach regulaminu i kar", null, "Gabinet wydziału"],
+      ["Kwerendy dla innych katedr", "Posiedzenia komisji dyscyplinarnej, gdy są sprawy", null, "Gabinet wydziału"],
+      ["Zebranie katedry", "Wolne"]
+    ]
+  },
+  {
+    id: "sport", short: "Kolegium Sportów",
+    name: "Kolegium Sportów Magicznych",
+    place: "Boisko, szatnie, magazyn mioteł", classPlace: "Boisko do quidditcha",
+    plan: [
+      ["Przegląd mioteł i sprzętu", "Lekcje latania dla pierwszoroczniaków", null, "Błonia"],
+      ["Trening własny", "Treningi drużyn Gryffindoru i Hufflepuffu"],
+      ["Konserwacja boiska, planowanie rozgrywek", "Dodatkowe lekcje latania dla słabszych", null, "Błonia"],
+      ["Analiza meczów i taktyka", "Treningi drużyn Slytherinu i Ravenclawu", "Szatnie"],
+      ["Zebranie katedry", "Wolne, w sobotę rano otwarty trening"]
+    ]
+  },
+  {
+    id: "magizoologia", short: "Magizoologia",
+    name: "Stacja Badawcza Magizoologii i Ekosystemów",
+    place: "Wybiegi przy chatce Hagrida", classPlace: "Skraj Zakazanego Lasu",
+    plan: [
+      ["Karmienie i obchód wybiegów", "Lekcje opieki nad magicznymi stworzeniami, klasy 3–5"],
+      ["Obserwacje w Zakazanym Lesie, tylko w parach", "Lekcje opieki nad magicznymi stworzeniami, klasy 6–7", "Zakazany Las"],
+      ["Dzienniki obserwacji, opieka nad chorymi zwierzętami", "Zajęcia dla młodszych uczniów przy chatce", null, "Chatka Hagrida"],
+      ["Badania terenowe nad jeziorem", "Porządki na wybiegach", "Brzeg jeziora", "Wybiegi przy chatce Hagrida"],
+      ["Zebranie katedry", "Wolne"]
+    ]
+  },
+  {
+    id: "munga", short: "Filia Świętego Munga",
+    name: "Zamkowa Filia Szpitala Świętego Munga",
+    place: "Skrzydło szpitalne", classPlace: "Skrzydło szpitalne",
+    plan: [
+      ["Obchód, przyjęcia uczniów", "Dyżur po lekcjach latania"],
+      ["Kursy uzupełniające, praca z podręcznikami Munga", "Przyjęcia uczniów"],
+      ["Obchód, przyjęcia uczniów", "Szkolenie z pierwszej pomocy dla innych katedr"],
+      ["Zamówienia eliksirów leczniczych z lochów", "Dyżur po treningach quidditcha"],
+      ["Zebranie, przegląd kart pacjentów", "Wolne"]
+    ]
+  },
+  {
+    id: "astronomia", short: "Astronomia",
+    name: "Katedra Astronomii Obserwacyjnej",
+    place: "Wieża Astronomiczna", classPlace: "Wieża Astronomiczna",
+    plan: [
+      ["Opracowanie obserwacji", "Kalibracja teleskopów"],
+      ["Obliczenia i katalog gwiazd", "Mapy nieba"],
+      ["Katalogowanie obserwacji", "Przygotowanie map dla innych katedr"],
+      ["Obserwacje dzienne, plamy słoneczne", "Mapy nieba"],
+      ["Zebranie katedry", "Wolne"]
+    ]
+  },
+  {
+    id: "rzemioslo", short: "Rzemiosło i Różdżkarstwo",
+    name: "Zakład Rzemiosła Magicznego i Różdżkarstwa",
+    place: "Pracownia na parterze", classPlace: "Pracownia na parterze",
+    plan: [
+      ["Naprawy różdżek uczniów", "Pokaz dla młodszych roczników"],
+      ["Badania nad drewnem i rdzeniami", "Naprawy sprzętu szkolnego: kociołki, teleskopy, miotły"],
+      ["Praca warsztatowa", "Asysta przy lekcjach zaklęć", null, "Sala zaklęć"],
+      ["Zamówienia materiałów, korespondencja z wytwórcami", "Konsultacje dla uczniów, którym różdżka nie słucha"],
+      ["Zebranie katedry", "Wolne"]
+    ]
+  },
+  {
+    id: "publikacje", short: "Koło Publikacji",
+    name: "Koło Publikacji Akademickiej i Biuro Przeglądu Prasy",
+    place: "Redakcja przy bibliotece", classPlace: "Redakcja przy bibliotece",
+    plan: [
+      ["Przegląd prasy", "Redakcja szkolnej gazetki z uczniami"],
+      ["Redakcja tekstów naukowych innych katedr", "Korespondencja z Prorokiem Codziennym", null, "Sowiarnia"],
+      ["Biuletyn programu, zapowiedź seminarium", "Zajęcia z pisania dla uczniów"],
+      ["Skład i korekta gazetki", "Wywiady z uczestnikami programu", null, "Cały zamek"],
+      ["Wydanie gazetki, zebranie", "Wolne"]
+    ]
+  }
+];
+
+// Kolejność katedr prezentujących się na środowym seminarium.
+// Pierwsza z listy prezentuje w tygodniu, który zaczyna się w dniu SEMINARIUM_START (poniedziałek).
+const SEMINARIUM_KOLEJKA = ["obrona", "prawo", "eliksiry", "munga", "runy", "botanika", "astronomia", "sport"];
+const SEMINARIUM_START = "2026-10-26";
+
+// Terminarz semestru. Daty jako miesiąc-dzień, rok liczy się sam.
+// "block" dokłada wydarzenie do planu dnia o podanych godzinach.
+const TERMINARZ = [
+  { from: "10-31", to: "10-31", name: "Uczta Halloweenowa", note: "Atrakcje dla uczniów przygotowują pary uczestników.",
+    block: { s: "19:00", e: "23:00", place: "Wielka Sala" } },
+  { from: "11-15", to: "11-15", name: "Mecz weteranów kontra reprezentacja szkoły",
+    block: { s: "14:00", e: "16:30", place: "Boisko do quidditcha" } },
+  { from: "11-17", to: "11-21", name: "Wizyta inspektora Ministerstwa", note: "Ewaluacja programu. Inspektor może zajrzeć do każdej katedry." },
+  { from: "11-28", to: "11-29", name: "Sympozjum naukowe w Hogwarcie" },
+  { from: "12-19", to: "12-19", name: "Koniec semestru", note: "Uczniowie wyjeżdżają Ekspresem Hogwart na święta." }
+];
+
+/* =====================================================================
+   Logika aplikacji. Tu zwykle nie trzeba nic zmieniać.
+   ===================================================================== */
+
+const TZ = "Europe/Warsaw";
+const DNI = ["poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota", "niedziela"];
+const DNI_KR = ["Pn", "Wt", "Śr", "Cz", "Pt", "Sb", "Nd"];
+const MIESIACE = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", "lipca", "sierpnia", "września", "października", "listopada", "grudnia"];
+const RODZAJ = {
+  work:     { label: "Praca w katedrze", cls: "solid" },
+  class:    { label: "Zajęcia z uczniami", cls: "solid" },
+  common:   { label: "Obowiązkowe dla wszystkich", cls: "solid" },
+  event:    { label: "Wydarzenie", cls: "solid" },
+  optional: { label: "Dla chętnych", cls: "" },
+  meal:     { label: "Przerwa", cls: "muted" },
+  free:     { label: "Wolne", cls: "muted" },
+  night:    { label: "Noc", cls: "muted" }
+};
+const WAZNE = new Set(["work", "class", "common", "event", "optional"]);
+
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+};
+
+const toMin = t => { const [h, m] = t.split(":").map(Number); return h * 60 + m; };
+const fmt = m => {
+  if (m >= 1440) return "24:00";
+  return String(Math.floor(m / 60)).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
+};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const B = (s, e, title, kind, place, note) => ({ s: toMin(s), e: toMin(s === e ? s : e), title, kind, place: place || "", note: note || "" });
+
+function overlay(list, nb) {
+  const out = [];
+  for (const b of list) {
+    if (b.e <= nb.s || b.s >= nb.e) { out.push(b); continue; }
+    if (b.s < nb.s) out.push({ ...b, e: nb.s });
+    if (b.e > nb.e) out.push({ ...b, s: nb.e });
+  }
+  out.push(nb);
+  return out.sort((a, b) => a.s - b.s);
+}
+
+/* Data helpers (calendar dates as {y, m, d}) */
+function warsawNow() {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: TZ, year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23", weekday: "short"
+  }).formatToParts(new Date());
+  const p = Object.fromEntries(parts.map(x => [x.type, x.value]));
+  const wd = { Mon: 0, Tue: 1, Wed: 2, Thu: 3, Fri: 4, Sat: 5, Sun: 6 }[p.weekday];
+  return { y: +p.year, m: +p.month, d: +p.day, wd, min: (+p.hour % 24) * 60 + (+p.minute) };
+}
+function addDays(date, n) {
+  const t = new Date(Date.UTC(date.y, date.m - 1, date.d + n));
+  return { y: t.getUTCFullYear(), m: t.getUTCMonth() + 1, d: t.getUTCDate() };
+}
+const dayNum = date => Date.UTC(date.y, date.m - 1, date.d) / 86400000;
+const mmdd = date => String(date.m).padStart(2, "0") + "-" + String(date.d).padStart(2, "0");
+
+function eventYear(md, today) {
+  // Rok szkolny zaczyna się we wrześniu: wydarzenia z września–grudnia należą do roku startu.
+  const start = today.m >= 9 ? today.y : today.y - 1;
+  return +md.slice(0, 2) >= 9 ? start : start + 1;
+}
+function eventRange(ev, today) {
+  const y1 = eventYear(ev.from, today), y2 = eventYear(ev.to, today);
+  return {
+    a: { y: y1, m: +ev.from.slice(0, 2), d: +ev.from.slice(3) },
+    b: { y: y2, m: +ev.to.slice(0, 2), d: +ev.to.slice(3) }
+  };
+}
+function eventsOn(date, today) {
+  return TERMINARZ.filter(ev => {
+    const r = eventRange(ev, today);
+    return dayNum(date) >= dayNum(r.a) && dayNum(date) <= dayNum(r.b);
+  });
+}
+
+function seminarInfo(date) {
+  if (!date) return "";
+  const [y, m, d] = SEMINARIUM_START.split("-").map(Number);
+  const weeks = Math.floor((dayNum(date) - dayNum({ y, m, d })) / 7);
+  if (weeks < 0 || !SEMINARIUM_KOLEJKA.length) return "";
+  const k = KATEDRY.find(x => x.id === SEMINARIUM_KOLEJKA[weeks % SEMINARIUM_KOLEJKA.length]);
+  return k ? "W tym tygodniu prezentuje: " + k.short + "." : "";
+}
+
+/* Plan of one day for one chair. date may be null (preview mode, no calendar events). */
+function buildDay(k, wd, date, today) {
+  const FREE_NOTE = "Czas dla siebie: Hogsmeade, puby, mieszkanie.";
+  let L = [];
+  const nightNote = k.id === "munga" ? "Jedna osoba z filii jest pod wezwaniem, według grafiku rotacyjnego." : "";
+
+  if (wd <= 4) {
+    const [r, po, rp, pp] = k.plan[wd];
+    L.push(B("00:00", "07:00", "Noc", "night", "", nightNote));
+    L.push(B("07:00", "08:00", "Poranek", "free", "Hogsmeade", "Śniadanie we własnej kuchni albo w wiosce, potem droga do zamku."));
+    L.push(B("08:00", "12:30", r, "work", rp || (wd === 4 ? "Gabinet katedry" : k.place)));
+    L.push(B("12:30", "13:30", "Przerwa obiadowa", "meal", "Wielka Sala", "Obiad przy stole uczestników programu, dla chętnych."));
+    if (wd < 4) {
+      L.push(B("13:30", "17:00", po, "class", pp || k.classPlace));
+    } else {
+      L.push(B("13:30", "14:00", "Domykanie tygodnia", "work", k.place, "Ostatnie sprawy przed weekendem."));
+      L.push(B("14:00", "24:00", po, "free", "", "Weekend zaczyna się w piątek o 14:00."));
+    }
+    if (wd === 0) {
+      L.push(B("17:00", "24:00", "Wolne", "free", "", FREE_NOTE));
+    } else if (wd === 1) {
+      L.push(B("17:00", "18:00", "Wolne", "free", "", FREE_NOTE));
+      L.push(B("18:00", "20:00", "Konsultacje dla siódmoklasistów", "optional", "Biblioteka", "Uczniowie przychodzą z pytaniami do Owutemów. Dobrowolne."));
+      L.push(B("20:00", "24:00", "Wolne", "free", "", FREE_NOTE));
+    } else if (wd === 2) {
+      L.push(B("17:00", "19:00", "Wolne", "free", "", FREE_NOTE));
+      L.push(B("19:00", "20:30", "Seminarium międzywydziałowe", "common", "Wielka Sala", seminarInfo(date)));
+      L.push(B("20:30", "21:00", "Herbata po seminarium", "optional", "Sala obok Wielkiej Sali", "Pół godziny na dyskusje, które nie zmieściły się w oficjalnej części."));
+      L.push(B("21:00", "24:00", "Wolne", "free", "", FREE_NOTE));
+    } else if (wd === 3) {
+      L.push(B("17:00", "21:00", "Wolne", "free", "", FREE_NOTE));
+      L.push(B("21:00", "24:00", "Dyżur na korytarzach", "common", "Korytarze zamku", "W parach z dwóch różnych katedr. Rano raport u woźnego."));
+    }
+  } else if (wd === 5) {
+    L.push(B("00:00", "07:00", "Noc", "night", "", nightNote));
+    L.push(B("07:00", "09:00", "Sobotni poranek", "free", "", ""));
+    L.push(B("09:00", "11:00", "Otwarty trening quidditcha", "optional", "Boisko do quidditcha", "Prowadzi Kolegium Sportów."));
+    L.push(B("11:00", "24:00", "Wolne", "free", "", FREE_NOTE));
+  } else {
+    L.push(B("00:00", "07:00", "Noc", "night", "", nightNote));
+    L.push(B("07:00", "24:00", "Niedziela, wolne", "free", "", FREE_NOTE));
+  }
+
+  if (k.id === "astronomia") {
+    if (wd === 0 || wd === 1) L = overlay(L, B("08:00", "11:00", "Odsypianie po nocnych lekcjach", "free", "Hogsmeade", "Dzień w katedrze zaczyna się o 11:00."));
+    if (wd === 0) L = overlay(L, B("22:00", "24:00", "Lekcje astronomii, klasy 4–7", "class", "Wieża Astronomiczna"));
+    if (wd === 1) L = overlay(L, B("22:00", "24:00", "Lekcje astronomii, klasy 1–3", "class", "Wieża Astronomiczna"));
+  }
+
+  if (date) {
+    for (const ev of eventsOn(date, today)) {
+      if (ev.block) L = overlay(L, B(ev.block.s, ev.block.e, ev.name, "event", ev.block.place, ev.note));
+    }
+  }
+  return L;
+}
+
+/* State */
+const state = {
+  chair: store.get("hr-katedra") || "",
+  viewDay: null,
+  preview: null // {wd, min}
+};
+
+function context() {
+  const real = warsawNow();
+  if (state.preview) {
+    return { wd: state.preview.wd, min: state.preview.min, date: null, today: real, preview: true };
+  }
+  return { wd: real.wd, min: real.min, date: { y: real.y, m: real.m, d: real.d }, today: real, preview: false };
+}
+
+function findCurrent(blocks, min) {
+  return blocks.findIndex(b => min >= b.s && min < b.e);
+}
+
+function findNext(k, ctx) {
+  for (let off = 0; off < 8; off++) {
+    const wd = (ctx.wd + off) % 7;
+    const date = ctx.date ? addDays(ctx.date, off) : null;
+    const blocks = buildDay(k, wd, date, ctx.today);
+    for (const b of blocks) {
+      if (off === 0 && b.s <= ctx.min) continue;
+      if (WAZNE.has(b.kind)) return { b, wd, off, inMin: off * 1440 + b.s - ctx.min };
+    }
+  }
+  return null;
+}
+
+function countdown(min) {
+  if (min < 60) return "za " + min + " min";
+  if (min < 1440) {
+    const h = Math.floor(min / 60), m = min % 60;
+    return "za " + h + " h" + (m ? " " + m + " min" : "");
+  }
+  const d = Math.floor(min / 1440), h = Math.floor((min % 1440) / 60);
+  return "za " + d + (d === 1 ? " dzień" : " dni") + (h ? " " + h + " h" : "");
+}
+
+function chip(kind) {
+  const r = RODZAJ[kind];
+  return `<span class="chip ${r.cls}">${r.label}</span>`;
+}
+
+/* Rendering */
+function renderPicker() {
+  const sel = document.getElementById("chair");
+  sel.innerHTML = `<option value="">Wybierz katedrę…</option>` +
+    KATEDRY.map(k => `<option value="${k.id}">${esc(k.name)}</option>`).join("");
+  sel.value = state.chair;
+  sel.addEventListener("change", () => {
+    state.chair = sel.value;
+    store.set("hr-katedra", state.chair);
+    render();
+  });
+
+  const pd = document.getElementById("peek-day");
+  pd.innerHTML = DNI.map((d, i) => `<option value="${i}">${d}</option>`).join("");
+  const real = warsawNow();
+  pd.value = String(real.wd);
+  document.getElementById("peek-time").value = fmt(real.min);
+  document.getElementById("peek-go").addEventListener("click", () => {
+    const t = document.getElementById("peek-time").value || "12:00";
+    state.preview = { wd: +pd.value, min: toMin(t) };
+    state.viewDay = state.preview.wd;
+    render();
+    document.getElementById("now").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+  document.getElementById("peek-reset").addEventListener("click", resetPreview);
+}
+
+function resetPreview() {
+  state.preview = null;
+  state.viewDay = null;
+  render();
+}
+
+function renderClock(ctx) {
+  document.getElementById("clock-time").textContent = fmt(ctx.min);
+  let day = DNI[ctx.wd];
+  day = day[0].toUpperCase() + day.slice(1);
+  if (ctx.date) day += ", " + ctx.date.d + " " + MIESIACE[ctx.date.m - 1];
+  document.getElementById("clock-day").textContent = day + (ctx.preview ? " · podgląd" : " · czas polski");
+}
+
+function renderNow(ctx) {
+  const el = document.getElementById("now");
+  const k = KATEDRY.find(x => x.id === state.chair);
+  if (!k) {
+    el.innerHTML = `<div class="label">Teraz</div>
+      <p class="empty-now">Wybierz swoją katedrę, a pokażę, co masz w tej chwili.</p>
+      <p class="sub">Wybór zostaje zapamiętany na tym urządzeniu.</p>`;
+    return;
+  }
+  const blocks = buildDay(k, ctx.wd, ctx.date, ctx.today);
+  const cur = blocks[findCurrent(blocks, ctx.min)];
+  const next = findNext(k, ctx);
+  const pct = cur ? Math.round(((ctx.min - cur.s) / (cur.e - cur.s)) * 100) : 0;
+  const left = cur ? cur.e - ctx.min : 0;
+
+  let nextHtml = "";
+  if (next) {
+    const when = next.off === 0 ? "o " + fmt(next.b.s)
+      : next.off === 1 ? "jutro o " + fmt(next.b.s)
+      : DNI[next.wd] + " o " + fmt(next.b.s);
+    nextHtml = `<div class="next">Następne: <strong>${esc(next.b.title)}</strong>, ${when} (${countdown(next.inMin)})</div>`;
+  }
+
+  el.innerHTML = `
+    <div class="label">Teraz · ${esc(k.short)}</div>
+    <div class="title">${esc(cur.title)}</div>
+    <div class="meta">
+      ${chip(cur.kind)}
+      <span>${fmt(cur.s)}–${fmt(cur.e)}</span>
+      ${cur.place ? `<span>${esc(cur.place)}</span>` : ""}
+    </div>
+    ${cur.note ? `<p class="note">${esc(cur.note)}</p>` : ""}
+    <div class="bar" role="progressbar" aria-label="Upłynęło" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>
+    <div class="next" style="margin-bottom:6px;color:var(--muted)">Do końca: ${left < 60 ? left + " min" : Math.floor(left / 60) + " h " + (left % 60) + " min"}</div>
+    ${nextHtml}`;
+}
+
+function renderBanner(ctx) {
+  const el = document.getElementById("banner");
+  const pn = document.getElementById("preview-note");
+  pn.innerHTML = ctx.preview
+    ? `<div class="preview-note">Oglądasz podgląd: ${DNI[ctx.wd]}, ${fmt(ctx.min)}. <button class="btn" type="button" id="back-now">Wróć do teraz</button></div>`
+    : "";
+  if (ctx.preview) document.getElementById("back-now").addEventListener("click", resetPreview);
+
+  if (!ctx.date) { el.innerHTML = ""; return; }
+  const today = eventsOn(ctx.date, ctx.today);
+  el.innerHTML = today.map(ev =>
+    `<div class="banner"><strong>Dziś: ${esc(ev.name)}</strong>${ev.block ? ", " + ev.block.s + ", " + esc(ev.block.place) : ""}${ev.note ? ". " + esc(ev.note) : ""}</div>`
+  ).join("");
+}
+
+function renderTabs(ctx) {
+  const el = document.getElementById("tabs");
+  const active = state.viewDay ?? ctx.wd;
+  el.innerHTML = DNI_KR.map((d, i) =>
+    `<button class="tab" role="tab" type="button" data-d="${i}" aria-selected="${i === active}" aria-label="${DNI[i]}">${d}${i === ctx.wd ? '<span class="today-dot" aria-hidden="true"></span>' : ""}</button>`
+  ).join("");
+  el.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => {
+    state.viewDay = +b.dataset.d;
+    renderTabs(context());
+    renderTimeline(context());
+  }));
+}
+
+function renderTimeline(ctx) {
+  const el = document.getElementById("timeline");
+  const k = KATEDRY.find(x => x.id === state.chair);
+  if (!k) {
+    el.innerHTML = `<li><div class="t"></div><div class="where">Wybierz katedrę u góry, żeby zobaczyć swój plan.</div></li>`;
+    return;
+  }
+  const wd = state.viewDay ?? ctx.wd;
+  const isToday = wd === ctx.wd;
+  let date = null;
+  if (ctx.date) {
+    const diff = (wd - ctx.wd + 7) % 7;
+    date = addDays(ctx.date, diff);
+  }
+  const blocks = buildDay(k, wd, date, ctx.today).filter(b => b.kind !== "night");
+  el.innerHTML = blocks.map(b => {
+    let cls = "";
+    if (isToday && ctx.min >= b.e) cls = "past";
+    if (isToday && ctx.min >= b.s && ctx.min < b.e) cls = "current";
+    if (b.kind === "free" || b.kind === "meal") cls += " quiet";
+    return `<li class="${cls.trim()}">
+      <div class="t">${fmt(b.s)}–${fmt(b.e)}</div>
+      <div>
+        <div class="row-top"><span class="what">${esc(b.title)}</span>${WAZNE.has(b.kind) ? chip(b.kind) : ""}</div>
+        ${b.place ? `<div class="where">${esc(b.place)}</div>` : ""}
+        ${b.note && WAZNE.has(b.kind) ? `<div class="where">${esc(b.note)}</div>` : ""}
+      </div>
+    </li>`;
+  }).join("");
+}
+
+function renderOthers(ctx) {
+  const el = document.getElementById("others");
+  el.innerHTML = KATEDRY.map(k => {
+    const blocks = buildDay(k, ctx.wd, ctx.date, ctx.today);
+    const cur = blocks[findCurrent(blocks, ctx.min)];
+    return `<div class="other${k.id === state.chair ? " mine" : ""}">
+      <div class="k">${esc(k.short)}</div>
+      <div class="w">${esc(cur.title)}</div>
+      ${cur.place ? `<div class="where" style="color:var(--muted);font-size:13px">${esc(cur.place)}</div>` : ""}
+    </div>`;
+  }).join("");
+}
+
+function renderEvents(ctx) {
+  const el = document.getElementById("events");
+  const today = ctx.today;
+  const tn = dayNum(today);
+  el.innerHTML = TERMINARZ.map(ev => {
+    const r = eventRange(ev, today);
+    const a = dayNum(r.a), b = dayNum(r.b);
+    let status, done = false;
+    if (tn > b) { status = "odbyło się"; done = true; }
+    else if (tn >= a) status = a === b ? "dziś" : "trwa";
+    else {
+      const n = a - tn;
+      status = n === 1 ? "jutro" : "za " + n + " dni";
+    }
+    const dateTxt = ev.from === ev.to
+      ? r.a.d + " " + MIESIACE[r.a.m - 1]
+      : r.a.m === r.b.m
+        ? r.a.d + "–" + r.b.d + " " + MIESIACE[r.a.m - 1]
+        : r.a.d + " " + MIESIACE[r.a.m - 1] + " – " + r.b.d + " " + MIESIACE[r.b.m - 1];
+    return `<li class="${done ? "done" : ""}">
+      <span class="d">${dateTxt}</span>
+      <span>${esc(ev.name)}</span>
+      <span class="s">${status}</span>
+    </li>`;
+  }).join("");
+}
+
+function render() {
+  const ctx = context();
+  renderClock(ctx);
+  renderNow(ctx);
+  renderBanner(ctx);
+  renderTabs(ctx);
+  renderTimeline(ctx);
+  renderOthers(ctx);
+  renderEvents(ctx);
+}
+
+renderPicker();
+render();
+setInterval(() => { if (!state.preview) render(); }, 30000);
+document.addEventListener("visibilitychange", () => { if (!document.hidden && !state.preview) render(); });
+</script>
+</body>
+</html>
