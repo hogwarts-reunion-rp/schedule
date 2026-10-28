@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Harmonogram · Hogwarts Reunion</title>
-<meta name="description" content="Harmonogram programu badań i praktyk w Hogwarcie, rok akademicki 2003/2004. Aktualny plan zajęć i aktywności dla poszczególnych katedr.">
+<meta name="description" content="Harmonogram programu badań i praktyk w Hogwarcie, rok 2003/2004. Pokazuje, co Twoja katedra ma w tej chwili.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Libre+Franklin:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -281,7 +281,7 @@
         <div class="day" id="clock-day">czas polski</div>
       </div>
       <div class="picker">
-        <label for="chair">Katedra</label>
+        <label for="chair">Twoja katedra</label>
         <select id="chair"></select>
       </div>
     </div>
@@ -291,13 +291,13 @@
   </section>
 
   <section aria-labelledby="day-h">
-    <h2 id="day-h">Plan tygodnia</h2>
+    <h2 id="day-h">Twój tydzień</h2>
     <div class="tabs" role="tablist" id="tabs"></div>
     <ol class="timeline" id="timeline"></ol>
   </section>
 
   <section aria-labelledby="others-h">
-    <h2 id="others-h">Pozostałe katedry</h2>
+    <h2 id="others-h">Gdzie są teraz inni</h2>
     <div class="others" id="others"></div>
   </section>
 
@@ -307,19 +307,19 @@
   </section>
 
   <details class="peek" id="peek">
-    <summary>Podgląd innego terminu</summary>
+    <summary>Sprawdź inną porę</summary>
     <div class="peek-row">
       <select id="peek-day" aria-label="Dzień tygodnia"></select>
       <input type="time" id="peek-time" value="12:00" aria-label="Godzina">
       <button class="btn solid" id="peek-go" type="button">Pokaż</button>
-      <button class="btn" id="peek-reset" type="button">Bieżący czas</button>
+      <button class="btn" id="peek-reset" type="button">Wróć do teraz</button>
     </div>
   </details>
 
   <div class="stripe" aria-hidden="true"></div>
   <footer>
     <p><a href="https://x.com/HogwartsReunion" target="_blank" rel="noopener">@HogwartsReunion</a></p>
-    <p class="plain">Godziny według czasu polskiego. Fikcyjny projekt roleplay.</p>
+    <p class="plain">Godziny według czasu polskiego. Konto fikcyjne, RP account.</p>
   </footer>
 </main>
 
@@ -342,7 +342,7 @@ const KATEDRY = [
       ["Badania nad truciznami i odtrutkami", "Lekcje eliksirów, klasy 4–5"],
       ["Inwentaryzacja magazynu składników zastrzeżonych", "Lekcje eliksirów, klasy 6–7", "Magazyn składników w lochach"],
       ["Eliksiry lecznicze na zamówienie skrzydła szpitalnego", "Koło eliksirów dla chętnych uczniów"],
-      ["Zebranie katedry", "Czas wolny"]
+      ["Zebranie katedry", "Wolne"]
     ]
   },
   {
@@ -354,7 +354,7 @@ const KATEDRY = [
       ["Eksperymenty w pracowni", "Lekcje transmutacji, klasy 4–5"],
       ["Sprawdzanie prac uczniów", "Lekcje transmutacji, klasy 6–7"],
       ["Ćwiczenia z animagii pod nadzorem, dla zakwalifikowanych", "Zajęcia wyrównawcze"],
-      ["Zebranie katedry", "Czas wolny"]
+      ["Zebranie katedry", "Wolne"]
     ]
   },
   {
@@ -366,7 +366,7 @@ const KATEDRY = [
       ["Hodowla doświadczalna, krzyżowanie odmian", "Lekcje zielarstwa, klasy 4–5"],
       ["Zbiór i suszenie surowców dla lochów i skrzydła szpitalnego", "Lekcje zielarstwa, klasy 6–7"],
       ["Przesadzanie roślin niebezpiecznych, tylko w parach", "Opieka nad cieplarniami po lekcjach"],
-      ["Zebranie katedry", "Czas wolny"]
+      ["Zebranie katedry", "Wolne"]
     ]
   },
   {
@@ -378,7 +378,7 @@ const KATEDRY = [
       ["Konserwacja zniszczonych woluminów", "Dyżur w bibliotece", null, "Biblioteka"],
       ["Katalogowanie zbiorów", "Lekcje starożytnych run, klasy 6–7"],
       ["Badanie inskrypcji w murach zamku", "Pomoc uczniom w czytelni", "Korytarze zamku", "Czytelnia"],
-      ["Zebranie katedry", "Czas wolny"]
+      ["Zebranie katedry", "Wolne"]
     ]
   },
   {
@@ -390,7 +390,7 @@ const KATEDRY = [
       ["Badania nad zdejmowaniem klątw z artefaktów", "Lekcje obrony przed czarną magią, klasy 4–5"],
       ["Przygotowanie sali i scenariuszy pojedynków", "Lekcje obrony przed czarną magią, klasy 6–7"],
       ["Zabezpieczanie nieużywanego skrzydła", "Klub pojedynków dla uczniów", "Nieużywane skrzydło zamku"],
-      ["Zebranie katedry, raport bezpieczeństwa dla Dyrekcji", "Czas wolny"]
+      ["Zebranie katedry, raport bezpieczeństwa dla Dyrekcji", "Wolne"]
     ]
   },
   {
@@ -402,7 +402,7 @@ const KATEDRY = [
       ["Korespondencja z Ministerstwem w sprawach programu", "Lekcje historii magii, klasy 5–7"],
       ["Analiza akt powojennych procesów", "Porady dla uczniów w sprawach regulaminu i kar", null, "Gabinet wydziału"],
       ["Kwerendy dla innych katedr", "Posiedzenia komisji dyscyplinarnej, gdy są sprawy", null, "Gabinet wydziału"],
-      ["Zebranie katedry", "Czas wolny"]
+      ["Zebranie katedry", "Wolne"]
     ]
   },
   {
@@ -414,7 +414,7 @@ const KATEDRY = [
       ["Trening własny", "Treningi drużyn Gryffindoru i Hufflepuffu"],
       ["Konserwacja boiska, planowanie rozgrywek", "Dodatkowe lekcje latania dla słabszych", null, "Błonia"],
       ["Analiza meczów i taktyka", "Treningi drużyn Slytherinu i Ravenclawu", "Szatnie"],
-      ["Zebranie katedry", "Czas wolny (w sobotę rano otwarty trening)"]
+      ["Zebranie katedry", "Wolne"]
     ]
   },
   {
@@ -426,7 +426,7 @@ const KATEDRY = [
       ["Obserwacje w Zakazanym Lesie, tylko w parach", "Lekcje opieki nad magicznymi stworzeniami, klasy 6–7", "Zakazany Las"],
       ["Dzienniki obserwacji, opieka nad chorymi zwierzętami", "Zajęcia dla młodszych uczniów przy chatce", null, "Chatka Hagrida"],
       ["Badania terenowe nad jeziorem", "Porządki na wybiegach", "Brzeg jeziora", "Wybiegi przy chatce Hagrida"],
-      ["Zebranie katedry", "Czas wolny"]
+      ["Zebranie katedry", "Wolne"]
     ]
   },
   {
@@ -438,7 +438,7 @@ const KATEDRY = [
       ["Kursy uzupełniające, praca z podręcznikami Munga", "Przyjęcia uczniów"],
       ["Obchód, przyjęcia uczniów", "Szkolenie z pierwszej pomocy dla innych katedr"],
       ["Zamówienia eliksirów leczniczych z lochów", "Dyżur po treningach quidditcha"],
-      ["Zebranie, przegląd kart pacjentów", "Czas wolny"]
+      ["Zebranie, przegląd kart pacjentów", "Wolne"]
     ]
   },
   {
@@ -450,7 +450,7 @@ const KATEDRY = [
       ["Obliczenia i katalog gwiazd", "Mapy nieba"],
       ["Katalogowanie obserwacji", "Przygotowanie map dla innych katedr"],
       ["Obserwacje dzienne, plamy słoneczne", "Mapy nieba"],
-      ["Zebranie katedry", "Czas wolny"]
+      ["Zebranie katedry", "Wolne"]
     ]
   },
   {
@@ -462,7 +462,7 @@ const KATEDRY = [
       ["Badania nad drewnem i rdzeniami", "Naprawy sprzętu szkolnego: kociołki, teleskopy, miotły"],
       ["Praca warsztatowa", "Asysta przy lekcjach zaklęć", null, "Sala zaklęć"],
       ["Zamówienia materiałów, korespondencja z wytwórcami", "Konsultacje dla uczniów, którym różdżka nie słucha"],
-      ["Zebranie katedry", "Czas wolny"]
+      ["Zebranie katedry", "Wolne"]
     ]
   },
   {
@@ -474,26 +474,21 @@ const KATEDRY = [
       ["Redakcja tekstów naukowych innych katedr", "Korespondencja z Prorokiem Codziennym", null, "Sowiarnia"],
       ["Biuletyn programu, zapowiedź seminarium", "Zajęcia z pisania dla uczniów"],
       ["Skład i korekta gazetki", "Wywiady z uczestnikami programu", null, "Cały zamek"],
-      ["Wydanie gazetki, zebranie", "Czas wolny"]
+      ["Wydanie gazetki, zebranie", "Wolne"]
     ]
   }
 ];
 
-// Kolejność katedr prezentujących się na środowym seminarium.
-// Pierwsza z listy prezentuje w tygodniu, który zaczyna się w dniu SEMINARIUM_START (poniedziałek).
-const SEMINARIUM_KOLEJKA = ["obrona", "prawo", "eliksiry", "munga", "runy", "botanika", "astronomia", "sport"];
-const SEMINARIUM_START = "2026-10-26";
-
 // Terminarz semestru. Daty jako miesiąc-dzień, rok liczy się sam.
 // "block" dokłada wydarzenie do planu dnia o podanych godzinach.
 const TERMINARZ = [
-  { from: "10-31", to: "10-31", name: "Uczta Halloweenowa", note: "Program dla uczniów koordynowany w parach międzykatedralnych.",
+  { from: "10-31", to: "10-31", name: "Uczta Halloweenowa", note: "Atrakcje dla uczniów przygotowują pary uczestników.",
     block: { s: "19:00", e: "23:00", place: "Wielka Sala" } },
   { from: "11-15", to: "11-15", name: "Mecz weteranów kontra reprezentacja szkoły",
     block: { s: "14:00", e: "16:30", place: "Boisko do quidditcha" } },
-  { from: "11-17", to: "11-21", name: "Wizyta inspektora Ministerstwa", note: "Hospitacje i kontrola przebiegu programu we wszystkich katedrach." },
+  { from: "11-17", to: "11-21", name: "Wizyta inspektora Ministerstwa", note: "Ewaluacja programu. Inspektor może zajrzeć do każdej katedry." },
   { from: "11-28", to: "11-29", name: "Sympozjum naukowe w Hogwarcie" },
-  { from: "12-19", to: "12-19", name: "Koniec semestru", note: "Wyjazd uczniów na przerwę świąteczną." }
+  { from: "12-19", to: "12-19", name: "Koniec semestru", note: "Uczniowie wyjeżdżają Ekspresem Hogwart na święta." }
 ];
 
 /* =====================================================================
@@ -507,12 +502,12 @@ const MIESIACE = ["stycznia", "lutego", "marca", "kwietnia", "maja", "czerwca", 
 const RODZAJ = {
   work:     { label: "Praca w katedrze", cls: "solid" },
   class:    { label: "Zajęcia z uczniami", cls: "solid" },
-  common:   { label: "Wspólne", cls: "solid" },
+  common:   { label: "Obowiązkowe dla wszystkich", cls: "solid" },
   event:    { label: "Wydarzenie", cls: "solid" },
-  optional: { label: "Fakultatywne", cls: "" },
+  optional: { label: "Dla chętnych", cls: "" },
   meal:     { label: "Przerwa", cls: "muted" },
-  free:     { label: "Czas wolny", cls: "muted" },
-  night:    { label: "Cisza nocna", cls: "muted" }
+  free:     { label: "Wolne", cls: "muted" },
+  night:    { label: "Noc", cls: "muted" }
 };
 const WAZNE = new Set(["work", "class", "common", "event", "optional"]);
 
@@ -576,60 +571,51 @@ function eventsOn(date, today) {
   });
 }
 
-function seminarInfo(date) {
-  if (!date) return "";
-  const [y, m, d] = SEMINARIUM_START.split("-").map(Number);
-  const weeks = Math.floor((dayNum(date) - dayNum({ y, m, d })) / 7);
-  if (weeks < 0 || !SEMINARIUM_KOLEJKA.length) return "";
-  const k = KATEDRY.find(x => x.id === SEMINARIUM_KOLEJKA[weeks % SEMINARIUM_KOLEJKA.length]);
-  return k ? "W tym tygodniu prezentuje: " + k.short + "." : "";
-}
-
 /* Plan of one day for one chair. date may be null (preview mode, no calendar events). */
 function buildDay(k, wd, date, today) {
-  const FREE_NOTE = "Czas wolny.";
+  const FREE_NOTE = "Czas dla siebie: Hogsmeade, puby, mieszkanie.";
   let L = [];
-  const nightNote = k.id === "munga" ? "Dyżur pod wezwaniem (według grafiku rotacyjnego)." : "";
+  const nightNote = k.id === "munga" ? "Jedna osoba z filii jest pod wezwaniem, według grafiku rotacyjnego." : "";
 
   if (wd <= 4) {
     const [r, po, rp, pp] = k.plan[wd];
-    L.push(B("00:00", "07:00", "Cisza nocna", "night", "", nightNote));
-    L.push(B("07:00", "08:00", "Czas wolny", "free", "Hogsmeade", "Śniadanie i dojście do zamku."));
+    L.push(B("00:00", "07:00", "Noc", "night", "", nightNote));
+    L.push(B("07:00", "08:00", "Poranek", "free", "Hogsmeade", "Śniadanie we własnej kuchni albo w wiosce, potem droga do zamku."));
     L.push(B("08:00", "12:30", r, "work", rp || (wd === 4 ? "Gabinet katedry" : k.place)));
-    L.push(B("12:30", "13:30", "Przerwa obiadowa", "meal", "Wielka Sala", "Obiad w Wielkiej Sali (stół kadry programu, dla chętnych)."));
+    L.push(B("12:30", "13:30", "Przerwa obiadowa", "meal", "Wielka Sala", "Obiad przy stole uczestników programu, dla chętnych."));
     if (wd < 4) {
-      L.push(B("13:30", "17:00", po, "class", pp || k.classPlace));
+      L.push(B("13:30", "17:00", po, k.id === "astronomia" ? "work" : "class", pp || (k.id === "astronomia" ? k.place : k.classPlace)));
     } else {
-      L.push(B("13:30", "14:00", "Podsumowanie tygodnia", "work", k.place, "Uporządkowanie spraw przed weekendem."));
-      L.push(B("14:00", "24:00", po, "free", "", "Czas wolny."));
+      L.push(B("13:30", "14:00", "Domykanie tygodnia", "work", k.place, "Ostatnie sprawy przed weekendem."));
+      L.push(B("14:00", "24:00", po, "free", "", "Weekend zaczyna się w piątek o 14:00."));
     }
     if (wd === 0) {
-      L.push(B("17:00", "24:00", "Czas wolny", "free", "", FREE_NOTE));
+      L.push(B("17:00", "24:00", "Wolne", "free", "", FREE_NOTE));
     } else if (wd === 1) {
-      L.push(B("17:00", "18:00", "Czas wolny", "free", "", FREE_NOTE));
-      L.push(B("18:00", "20:00", "Konsultacje dla siódmoklasistów", "optional", "Biblioteka", "Otwarte konsultacje przed OWUT-ami dla uczniów klas siódmych."));
-      L.push(B("20:00", "24:00", "Czas wolny", "free", "", FREE_NOTE));
+      L.push(B("17:00", "18:00", "Wolne", "free", "", FREE_NOTE));
+      L.push(B("18:00", "20:00", "Konsultacje dla siódmoklasistów", "optional", "Biblioteka", "Uczniowie przychodzą z pytaniami do Owutemów. Dobrowolne."));
+      L.push(B("20:00", "24:00", "Wolne", "free", "", FREE_NOTE));
     } else if (wd === 2) {
-      L.push(B("17:00", "19:00", "Czas wolny", "free", "", FREE_NOTE));
-      L.push(B("19:00", "20:30", "Seminarium międzywydziałowe", "common", "Wielka Sala", seminarInfo(date)));
-      L.push(B("20:30", "21:00", "Herbata po seminarium", "optional", "Sala obok Wielkiej Sali", "Dyskusje kuluarowe po seminarium."));
-      L.push(B("21:00", "24:00", "Czas wolny", "free", "", FREE_NOTE));
+      L.push(B("17:00", "19:00", "Wolne", "free", "", FREE_NOTE));
+      L.push(B("19:00", "20:30", "Seminarium międzywydziałowe", "common", "Wielka Sala"));
+      L.push(B("20:30", "21:00", "Herbata po seminarium", "optional", "Sala obok Wielkiej Sali", "Pół godziny na dyskusje, które nie zmieściły się w oficjalnej części."));
+      L.push(B("21:00", "24:00", "Wolne", "free", "", FREE_NOTE));
     } else if (wd === 3) {
-      L.push(B("17:00", "21:00", "Czas wolny", "free", "", FREE_NOTE));
-      L.push(B("21:00", "24:00", "Dyżur na korytarzach", "common", "Korytarze zamku", "Nocny patrol zamku w zespołach dwuosobowych. Rano raport u woźnego."));
+      L.push(B("17:00", "21:00", "Wolne", "free", "", FREE_NOTE));
+      L.push(B("21:00", "24:00", "Dyżur na korytarzach", "common", "Korytarze zamku", "W parach z dwóch różnych katedr. Rano raport u woźnego."));
     }
   } else if (wd === 5) {
-    L.push(B("00:00", "07:00", "Cisza nocna", "night", "", nightNote));
-    L.push(B("07:00", "09:00", "Czas wolny", "free", "", ""));
-    L.push(B("09:00", "11:00", "Otwarty trening quidditcha", "optional", "Boisko do quidditcha", "Zajęcia otwarte prowadzone przez Kolegium Sportów."));
-    L.push(B("11:00", "24:00", "Czas wolny", "free", "", FREE_NOTE));
+    L.push(B("00:00", "07:00", "Noc", "night", "", nightNote));
+    L.push(B("07:00", "09:00", "Sobotni poranek", "free", "", ""));
+    L.push(B("09:00", "11:00", "Otwarty trening quidditcha", "optional", "Boisko do quidditcha", "Prowadzi Kolegium Sportów."));
+    L.push(B("11:00", "24:00", "Wolne", "free", "", FREE_NOTE));
   } else {
-    L.push(B("00:00", "07:00", "Cisza nocna", "night", "", nightNote));
-    L.push(B("07:00", "24:00", "Czas wolny", "free", "", FREE_NOTE));
+    L.push(B("00:00", "07:00", "Noc", "night", "", nightNote));
+    L.push(B("07:00", "24:00", "Niedziela, wolne", "free", "", FREE_NOTE));
   }
 
   if (k.id === "astronomia") {
-    if (wd === 0 || wd === 1) L = overlay(L, B("08:00", "11:00", "Odpoczynek po zajęciach nocnych", "free", "Hogsmeade", "Dyżur w katedrze rozpoczyna się o 11:00."));
+    if (wd === 0 || wd === 1) L = overlay(L, B("08:00", "11:00", "Odsypianie po nocnych lekcjach", "free", "Hogsmeade", "Dzień w katedrze zaczyna się o 11:00."));
     if (wd === 0) L = overlay(L, B("22:00", "24:00", "Lekcje astronomii, klasy 4–7", "class", "Wieża Astronomiczna"));
     if (wd === 1) L = overlay(L, B("22:00", "24:00", "Lekcje astronomii, klasy 1–3", "class", "Wieża Astronomiczna"));
   }
@@ -734,9 +720,9 @@ function renderNow(ctx) {
   const el = document.getElementById("now");
   const k = KATEDRY.find(x => x.id === state.chair);
   if (!k) {
-    el.innerHTML = `<div class="label">Bieżący status</div>
-      <p class="empty-now">Wybierz katedrę, aby sprawdzić aktualny plan zajęć.</p>
-      <p class="sub">Wybór zostanie zapisany w tej przeglądarce.</p>`;
+    el.innerHTML = `<div class="label">Teraz</div>
+      <p class="empty-now">Wybierz swoją katedrę, a pokażę, co masz w tej chwili.</p>
+      <p class="sub">Wybór zostaje zapamiętany na tym urządzeniu.</p>`;
     return;
   }
   const blocks = buildDay(k, ctx.wd, ctx.date, ctx.today);
@@ -750,11 +736,11 @@ function renderNow(ctx) {
     const when = next.off === 0 ? "o " + fmt(next.b.s)
       : next.off === 1 ? "jutro o " + fmt(next.b.s)
       : DNI[next.wd] + " o " + fmt(next.b.s);
-    nextHtml = `<div class="next">Następnie: <strong>${esc(next.b.title)}</strong>, ${when} (${countdown(next.inMin)})</div>`;
+    nextHtml = `<div class="next">Następne: <strong>${esc(next.b.title)}</strong>, ${when} (${countdown(next.inMin)})</div>`;
   }
 
   el.innerHTML = `
-    <div class="label">Aktualnie · ${esc(k.short)}</div>
+    <div class="label">Teraz · ${esc(k.short)}</div>
     <div class="title">${esc(cur.title)}</div>
     <div class="meta">
       ${chip(cur.kind)}
@@ -762,8 +748,8 @@ function renderNow(ctx) {
       ${cur.place ? `<span>${esc(cur.place)}</span>` : ""}
     </div>
     ${cur.note ? `<p class="note">${esc(cur.note)}</p>` : ""}
-    <div class="bar" role="progressbar" aria-label="Postęp bieżącego bloku czasowego" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>
-    <div class="next" style="margin-bottom:6px;color:var(--muted)">Pozostało: ${left < 60 ? left + " min" : Math.floor(left / 60) + " h " + (left % 60) + " min"}</div>
+    <div class="bar" role="progressbar" aria-label="Upłynęło" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>
+    <div class="next" style="margin-bottom:6px;color:var(--muted)">Do końca: ${left < 60 ? left + " min" : Math.floor(left / 60) + " h" + (left % 60 ? " " + (left % 60) + " min" : "")}</div>
     ${nextHtml}`;
 }
 
@@ -771,14 +757,14 @@ function renderBanner(ctx) {
   const el = document.getElementById("banner");
   const pn = document.getElementById("preview-note");
   pn.innerHTML = ctx.preview
-    ? `<div class="preview-note">Podgląd harmonogramu: ${DNI[ctx.wd]}, godz. ${fmt(ctx.min)}. <button class="btn" type="button" id="back-now">Wróć do bieżącego czasu</button></div>`
+    ? `<div class="preview-note">Oglądasz podgląd: ${DNI[ctx.wd]}, ${fmt(ctx.min)}. <button class="btn" type="button" id="back-now">Wróć do teraz</button></div>`
     : "";
   if (ctx.preview) document.getElementById("back-now").addEventListener("click", resetPreview);
 
   if (!ctx.date) { el.innerHTML = ""; return; }
   const today = eventsOn(ctx.date, ctx.today);
   el.innerHTML = today.map(ev =>
-    `<div class="banner"><strong>Wydarzenie: ${esc(ev.name)}</strong>${ev.block ? ", " + ev.block.s + ", " + esc(ev.block.place) : ""}${ev.note ? ". " + esc(ev.note) : ""}</div>`
+    `<div class="banner"><strong>Dziś: ${esc(ev.name)}</strong>${ev.block ? ", " + ev.block.s + ", " + esc(ev.block.place) : ""}${ev.note ? ". " + esc(ev.note) : ""}</div>`
   ).join("");
 }
 
@@ -799,7 +785,7 @@ function renderTimeline(ctx) {
   const el = document.getElementById("timeline");
   const k = KATEDRY.find(x => x.id === state.chair);
   if (!k) {
-    el.innerHTML = `<li><div class="t"></div><div class="where">Wybierz katedrę powyżej, aby wyświetlić harmonogram.</div></li>`;
+    el.innerHTML = `<li><div class="t"></div><div class="where">Wybierz katedrę u góry, żeby zobaczyć swój plan.</div></li>`;
     return;
   }
   const wd = state.viewDay ?? ctx.wd;
@@ -847,7 +833,7 @@ function renderEvents(ctx) {
     const r = eventRange(ev, today);
     const a = dayNum(r.a), b = dayNum(r.b);
     let status, done = false;
-    if (tn > b) { status = "zakończone"; done = true; }
+    if (tn > b) { status = "odbyło się"; done = true; }
     else if (tn >= a) status = a === b ? "dziś" : "trwa";
     else {
       const n = a - tn;
@@ -860,7 +846,7 @@ function renderEvents(ctx) {
         : r.a.d + " " + MIESIACE[r.a.m - 1] + " – " + r.b.d + " " + MIESIACE[r.b.m - 1];
     return `<li class="${done ? "done" : ""}">
       <span class="d">${dateTxt}</span>
-      <span>${esc(ev.name)}</span>
+      <span>${esc(ev.name)}${ev.block ? `<span class="where" style="display:block;color:var(--muted);font-size:13px">${ev.block.s}–${ev.block.e}, ${esc(ev.block.place)}</span>` : ""}</span>
       <span class="s">${status}</span>
     </li>`;
   }).join("");
